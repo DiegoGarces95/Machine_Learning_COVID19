@@ -31,3 +31,10 @@
 
 - Final:
   Choose the best model with cross-validation, tune it a bit, test once on the final test set, and discuss where it makes mistakes.
+
+
+
+
+
+## Steps record
+   - translate and classify the columns
