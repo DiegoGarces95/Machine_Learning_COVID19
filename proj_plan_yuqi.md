@@ -21,7 +21,7 @@
   Use stratified split because the classes are imbalanced.
 
 - Models:
-  Compare a simple baseline, logistic regression, random forest, and maybe gradient boosting?
+  Compare logistic regression, random forest, a simple MLP?
 
 - Metrics:
   Use accuracy plus better metrics for imbalance, like F1, recall, ROC-AUC, and confusion matrix.
@@ -36,5 +36,11 @@
 
 
 
-## Steps record
+## Progress record
+  
    - translate and classify the columns
+   - create the target: `0`: outpatient, `1`: hospitalized
+   - used a preliminary version of features provided by diego, `NEUMONIA` kept separate
+   - cleaned the data, missing values checked
+   - leakage audit conducted
+  
