@@ -21,7 +21,9 @@
   Use stratified split because the classes are imbalanced.
 
 - Models:
-  Compare logistic regression, random forest, a simple MLP?
+  trivial reference predictor: majority-class classifier
+  
+  logistic regression, random forest, a simple MLP?
 
 - Metrics:
   Use accuracy plus better metrics for imbalance, like F1, recall, ROC-AUC, and confusion matrix.
@@ -43,4 +45,6 @@
    - used a preliminary version of features provided by diego, `NEUMONIA` kept separate
    - cleaned the data, missing values checked
    - leakage audit conducted
-  
+   - Add EDA plots
+   - train/test split
+   
