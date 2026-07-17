@@ -117,6 +117,58 @@
 
 
 
+% ============================================================
+% PROJECT CONTENT: Data & Leakage section
+% ============================================================
+
+\section{Data}
+\label{sec:data}
+
+We use the publicly available Mexican COVID-19 surveillance dataset
+(\texttt{mexico\_covid19.csv}), released by the Secretar\'ia de Salud de M\'exico
+under the SISVER system. The dataset comprises 41 variables covering demographics,
+comorbidities, clinical status, and administrative records for patients attending
+health units during the pandemic.
+
+\subsection{Target variable}
+
+The prediction target is \texttt{TIPO\_PACIENTE}, a binary indicator of whether a
+patient required hospitalisation ($=1$) or was treated as an outpatient ($=0$).
+
+\subsection{Exclusion of post-admission variables (data leakage)}
+
+Several variables in this dataset are recorded \emph{at discharge} rather than at
+the time of initial triage, and therefore constitute data leakage: including them
+would allow the model to exploit information that is unavailable at prediction
+time.
+The following variables were excluded on this basis:
+
+\begin{itemize}
+  \item \textbf{UCI} (ICU admission): determined days after triage, once the
+        severity of the patient's condition has been assessed inside the hospital.
+  \item \textbf{INTUBADO} (mechanical ventilation): an inpatient procedure that
+        occurs after hospitalisation is decided.
+  \item \textbf{FECHA\_DEF} (date of death): a future event, by definition unknown
+        at the moment of presentation.
+  \item \textbf{RESULTADO} (PCR test result): laboratory confirmation typically
+        takes 24--72 hours after sample collection.
+  \item \textbf{NEUMONIA} (pneumonia diagnosis): in the SISVER registry this field
+        records radiologically confirmed pneumonia, which requires chest imaging
+        performed \emph{during} the hospital stay. Although pneumonia can in
+        principle be a pre-existing condition, the coding convention of this
+        dataset makes it indistinguishable from a post-admission finding.
+        Accordingly, we treat it as a discharge-time variable and exclude it.
+\end{itemize}
+
+The remaining features --- age, sex, and 13 binary comorbidity indicators
+(diabetes, hypertension, EPOC, asthma, immunosuppression, cardiovascular disease,
+obesity, chronic renal disease, smoking, among others) --- are all assessable at
+triage and constitute the final feature set.
+
+% ============================================================
+% NeurIPS TEMPLATE CONTENT (retained for formatting reference)
+% ============================================================
+
 \section{Submission of papers to NeurIPS 2026}
 
 
