@@ -4,51 +4,8 @@
 %     \PassOptionsToPackage{numbers, compress}{natbib}
 % before loading neurips_2026
 
-% The authors should use one of these tracks.
-% Before accepting by the NeurIPS conference, select one of the options below.
-% 0. "default" for submission
-\usepackage{neurips_2026}
-% the "default" option is equal to the "main" option, which is used for the Main Track with double-blind reviewing.
-% 1. "main" option is used for the Main Track
-%  \usepackage[main]{neurips_2026}
-% 2. "position" option is used for the Position Paper Track
-%  \usepackage[position]{neurips_2026}
-% 3. "eandd" option is used for the Evaluations & Datasets Track
- % \usepackage[eandd]{neurips_2026}
-% 4. "creativeai" option is used for the Creative AI Track
-%  \usepackage[creativeai]{neurips_2026}
-% 5. "sglblindworkshop" option is used for the Workshop with single-blind reviewing
- % \usepackage[sglblindworkshop]{neurips_2026}
-% 6. "dblblindworkshop" option is used for the Workshop with double-blind reviewing
-%  \usepackage[dblblindworkshop]{neurips_2026}
-% 7. "education" option is used for the Education Track
-%  \usepackage[education]{neurips_2026}
-
-
-% After being accepted, the authors should add "final" behind the track to compile a camera-ready version.
-% 1. Main Track
- % \usepackage[main, final]{neurips_2026}
-% 2. Position Paper Track
-%  \usepackage[position, final]{neurips_2026}
-% 3. Evaluations & Datasets Track
- % \usepackage[eandd, final]{neurips_2026}
-% 4. Creative AI Track
-%  \usepackage[creativeai, final]{neurips_2026}
-% 5. Workshop with single-blind reviewing
-%  \usepackage[sglblindworkshop, final]{neurips_2026}
-% 6. Workshop with double-blind reviewing
-%  \usepackage[dblblindworkshop, final]{neurips_2026}
-% Note. For the workshop paper template, both \title{} and \workshoptitle{} are required, with the former indicating the paper title shown in the title and the latter indicating the workshop title displayed in the footnote.
-% For workshops (5., 6.), the authors should add the name of the workshop, "\workshoptitle" command is used to set the workshop title.
-% \workshoptitle{WORKSHOP TITLE}
-% 7. Education Track
-% \usepackage[education, final]{neurips_2026}
-
-% "preprint" option is used for arXiv or other preprint submissions
- % \usepackage[preprint]{neurips_2026}
-
-% to avoid loading the natbib package, add option nonatbib:
-%    \usepackage[nonatbib]{neurips_2026}
+% We use the preprint option to compile with proper headers/footers for arXiv or course submission
+\usepackage[preprint]{neurips_2026}
 
 \usepackage[utf8]{inputenc} % allow utf-8 input
 \usepackage[T1]{fontenc}    % use 8-bit T1 fonts
@@ -59,490 +16,194 @@
 \usepackage{nicefrac}       % compact symbols for 1/2, etc.
 \usepackage{microtype}      % microtypography
 \usepackage{xcolor}         % colors
+\usepackage{graphicx}       % embedding figures
+\usepackage{amsmath}        % mathematical equations
 
-% Note. For the workshop paper template, both \title{} and \workshoptitle{} are required, with the former indicating the paper title shown in the title and the latter indicating the workshop title displayed in the footnote. 
-\title{Formatting Instructions For NeurIPS 2026}
-
-
-% The \author macro works with any number of authors. There are two commands
-% used to separate the names and addresses of multiple authors: \And and \AND.
-%
-% Using \And between authors leaves it to LaTeX to determine where to break the
-% lines. Using \AND forces a line break at that point. So, if LaTeX puts 3 of 4
-% authors names on the first line, and the last on the second line, try using
-% \AND instead of \And before the third author name.
-
+\title{Machine Learning for Minute 1 COVID-19 Clinical Triage: A Preattentive Visual Analytics and Fairness Assessment}
 
 \author{%
-  David S.~Hippocampus\thanks{Use footnote for providing further information
-    about author (webpage, alternative address)---\emph{not} for acknowledging
-    funding agencies.} \\
-  Department of Computer Science\\
-  Cranberry-Lemon University\\
-  Pittsburgh, PA 15213 \\
-  \texttt{hippo@cs.cranberry-lemon.edu} \\
-  % examples of more authors
-  % \And
-  % Coauthor \\
-  % Affiliation \\
-  % Address \\
-  % \texttt{email} \\
-  % \AND
-  % Coauthor \\
-  % Affiliation \\
-  % Address \\
-  % \texttt{email} \\
-  % \And
-  % Coauthor \\
-  % Affiliation \\
-  % Address \\
-  % \texttt{email} \\
-  % \And
-  % Coauthor \\
-  % Affiliation \\
-  % Address \\
-  % \texttt{email} \\
+  Diego Garcés \\
+  Applied Machine Learning Division\\
+  \texttt{diego.garces@university.edu} \\
 }
-
 
 \begin{document}
 
-
 \maketitle
 
-
 \begin{abstract}
-  The abstract paragraph should be indented \nicefrac{1}{2}~inch (3~picas) on both the left- and right-hand margins. Use 10~point type, with a vertical spacing (leading) of 11~points. The word \textbf{Abstract} must be centered, bold, and in point size 12. Two line spaces precede the abstract. The abstract must be limited to one paragraph.
+During high-volume epidemiological surges, emergency triage personnel must rapidly determine whether arriving patients require immediate hospital admission or can be safely discharged for outpatient care. When evaluating potentially life-threatening respiratory illnesses such as COVID-19 during \emph{Minute 1} of intake, models that inadvertently incorporate post-admission outcomes (e.g., intubation or ICU transfer) suffer from severe data leakage, inflating theoretical accuracy while failing in real-world clinical deployment. In this study, we develop and evaluate an end-to-end Machine Learning decision support pipeline trained on $263,007$ stratified patient arrivals from the official Mexican Epidemiological Surveillance System (SISVER). We enforce a rigorous methodological audit to eliminate post-triage variables and address a $3.2:1$ class imbalance ($23.6\%$ hospitalization rate) by optimizing directly for Precision-Recall Area Under the Curve ($\text{PR-AUC}$). Our tuned Random Forest classifier achieves a $\text{PR-AUC}$ of $0.5771$ ($+132\%$ over the dummy baseline) and captures $70.1\%$ of severe hospitalized arrivals ($\text{Recall}$) on a locked test vault of $52,602$ patients. Coupling state-of-the-art Visual Analytics (InfoVis) with honest subgroup error analysis reveals critical demographic vulnerabilities: young adults ($20\text{--}39$ years old) and patients with zero recorded comorbidities exhibit high false-negative rates ($82.0\%$ and $53.9\%$, respectively). We propose an operational triage protocol combining model-driven probability scores with mandatory pulse oximetry monitoring for young arrivals.
 \end{abstract}
 
+\section{Introduction and Clinical Motivation}
+\label{sec:introduction}
 
+When a patient arrives at an emergency department or primary care triage station with suspected COVID-19 symptoms, clinical practitioners face a high-stakes decision under tight time constraints: \emph{Should the patient be admitted to an inpatient hospital bed, or can they safely recover at home as an outpatient?} Making an incorrect decision carries asymmetric risks. Sending a severe patient home without medical observation (a False Negative) can lead to rapid respiratory failure and fatality, whereas admitting a mild outpatient for clinical observation (a False Positive) incurs an operational and economic cost but preserves patient safety.
 
-% ============================================================
-% PROJECT CONTENT: Data & Leakage section
-% ============================================================
+Machine Learning (ML) algorithms offer substantial utility in augmenting clinical decision-making during high-volume surges. However, three fundamental challenges complicate real-world adoption:
+\begin{enumerate}
+    \item \textbf{Data Leakage:} Many retrospective medical studies inadvertently incorporate variables that are only measured hours or days after admission (e.g., mechanical ventilation or ICU transfer), yielding artificially perfect predictive scores that collapse upon prospective triage deployment.
+    \item \textbf{Class Imbalance and Metric Misalignment:} In typical emergency cohorts, mild outpatients outnumber severe hospitalizations. Models evaluated via standard Accuracy tend to predict the majority outpatient class overwhelmingly, missing critical emergencies.
+    \item \textbf{Opaque Failure Modes:} Complex tree ensembles or neural networks can mask severe systematic biases across demographic subgroups (e.g., age cohorts or geographic regions) unless evaluated through transparent visual analytics.
+\end{enumerate}
 
-\section{Data}
+To overcome these barriers, we construct a publication-grade, interpretable ML workflow that operates strictly on \emph{Minute 1} intake data. By combining preattentive Visual Analytics (InfoVis) with stratified cross-validation and subgroup error auditing, we provide a robust decision-support framework tailored for high-stakes emergency triage.
+
+\section{Dataset Structure and Methodological Anti-Leakage Audit}
 \label{sec:data}
 
-We use the publicly available Mexican COVID-19 surveillance dataset
-(\texttt{mexico\_covid19.csv}), released by the Secretar\'ia de Salud de M\'exico
-under the SISVER system. The dataset comprises 41 variables covering demographics,
-comorbidities, clinical status, and administrative records for patients attending
-health units during the pandemic.
+We analyze the official open surveillance dataset provided by the Ministry of Health of Mexico under the Epidemiological Surveillance System for Viral Respiratory Diseases (SISVER) (\texttt{mexico\_covid19.csv}). The raw registry contains $3,846,654$ historical patient records spanning $41$ clinical, demographic, and administrative columns. We filter the cohort to confirmed positive COVID-19 cases and extract a reproducible, stratified random sample of $n=263,007$ patients to conduct rigorous experimentation while preserving statistical fidelity.
 
-\subsection{Target variable}
-
-The prediction target is \texttt{TIPO\_PACIENTE}, a binary indicator of whether a
-patient required hospitalisation ($=1$) or was treated as an outpatient ($=0$).
-
-\subsection{Exclusion of post-admission variables (data leakage)}
-
-Several variables in this dataset are recorded \emph{at discharge} rather than at
-the time of initial triage, and therefore constitute data leakage: including them
-would allow the model to exploit information that is unavailable at prediction
-time.
-The following variables were excluded on this basis:
-
+\subsection{Target Formulation}
+The prediction objective is formulated as a binary classification problem based on the original \texttt{TIPO\_PACIENTE} field:
 \begin{itemize}
-  \item \textbf{UCI} (ICU admission): determined days after triage, once the
-        severity of the patient's condition has been assessed inside the hospital.
-  \item \textbf{INTUBADO} (mechanical ventilation): an inpatient procedure that
-        occurs after hospitalisation is decided.
-  \item \textbf{FECHA\_DEF} (date of death): a future event, by definition unknown
-        at the moment of presentation.
-  \item \textbf{RESULTADO} (PCR test result): laboratory confirmation typically
-        takes 24--72 hours after sample collection.
-  \item \textbf{NEUMONIA} (pneumonia diagnosis): in the SISVER registry this field
-        records radiologically confirmed pneumonia, which requires chest imaging
-        performed \emph{during} the hospital stay. Although pneumonia can in
-        principle be a pre-existing condition, the coding convention of this
-        dataset makes it indistinguishable from a post-admission finding.
-        Accordingly, we treat it as a discharge-time variable and exclude it.
+    \item $\textbf{0}$ (\textbf{Outpatient / Mild}): Patient exhibited moderate symptoms and was sent home for ambulatory recovery ($76.4\%$ of cohort).
+    \item $\textbf{1}$ (\textbf{Hospitalized / Severe}): Patient required immediate hospital admission due to high clinical risk ($23.6\%$ of cohort).
 \end{itemize}
 
-The remaining features --- age, sex, and 13 binary comorbidity indicators
-(diabetes, hypertension, EPOC, asthma, immunosuppression, cardiovascular disease,
-obesity, chronic renal disease, smoking, among others) --- are all assessable at
-triage and constitute the final feature set.
-
-% ============================================================
-% NeurIPS TEMPLATE CONTENT (retained for formatting reference)
-% ============================================================
-
-\section{Submission of papers to NeurIPS 2026}
-
-
-Please read the instructions below carefully and follow them faithfully.
-
-
-\subsection{Style}
-
-
-Papers to be submitted to NeurIPS 2026 must be prepared according to the
-instructions presented here. Papers may only be up to {\bf nine} pages long, including figures. \textbf{Papers that exceed the page limit will not be reviewed (or in any other way considered) for presentation at the conference.}
-Additional pages \emph{containing acknowledgments, references, checklist, and optional technical appendices} do not count as content pages. 
-
-
-The margins in 2026 are the same as those in previous years.
-
-
-Authors are required to use the NeurIPS \LaTeX{} style files obtainable at the NeurIPS website as indicated below. Please make sure you use the current files and not previous versions. Tweaking the style files may be grounds for desk rejection.
-
-
-\subsection{Retrieval of style files}
-
-
-The style files for NeurIPS and other conference information are available on the website at
-\begin{center}
-  \url{https://neurips.cc}.
-\end{center}
-% The file \verb+neurips_2026.pdf+ contains these instructions and illustrates the various formatting requirements your NeurIPS paper must satisfy.
-
-
-The only supported style file for NeurIPS 2026 is \verb+neurips_2026.sty+, rewritten for \LaTeXe{}. \textbf{Previous style files for \LaTeX{} 2.09,  Microsoft Word, and RTF are no longer supported.}
-
-
-The \LaTeX{} style file contains three optional arguments: 
+\subsection{Strict Anti-Leakage Audit}
+To ensure strict clinical realism at Minute 1 of intake, we conduct a systematic audit of all available columns, categorizing features into pre-admission predictors versus post-admission outcomes. The following features were explicitly excluded to prevent data leakage:
 \begin{itemize}
-\item \verb+final+, which creates a camera-ready copy, 
-\item \verb+preprint+, which creates a preprint for submission to, e.g., arXiv, \item \verb+nonatbib+, which will not load the \verb+natbib+ package for you in case of package clash.
+    \item \textbf{UCI} (Intensive Care Unit admission): Determined days after triage once the patient's inpatient trajectory deteriorates.
+    \item \textbf{INTUBADO} (Mechanical intubation): An invasive inpatient procedure ordered after admission is established.
+    \item \textbf{FECHA\_DEF} (Date of death): A future survival outcome entirely unknown at initial intake.
+    \item \textbf{RESULTADO} (RT-PCR laboratory confirmation): Molecular testing results typically require $24\text{--}72$ hours to process and cannot inform immediate intake triage.
+    \item \textbf{NEUMONIA} (Pneumonia diagnosis): Within the SISVER registry, pneumonia confirmation requires chest X-ray or CT imaging performed inside the hospital facility post-admission. Although pneumonia can exist upon arrival, coding conventions make it indistinguishable from hospital-diagnosed complications.
 \end{itemize}
 
+Our final validated input feature set comprises exactly $13$ variables: patient age (\texttt{EDAD}), biological sex (\texttt{SEXO}), intake healthcare entity (\texttt{ENTIDAD\_UM}), and $10$ pre-existing chronic comorbidities (\texttt{DIABETES}, \texttt{HIPERTENSION}, \texttt{OBESIDAD}, \texttt{EPOC}, \texttt{ASMA}, \texttt{RENAL\_CRONICA}, \texttt{CARDIOVASCULAR}, \texttt{INMUSUPR}, \texttt{TABAQUISMO}, and \texttt{OTRA\_COM}).
 
-\paragraph{Preprint option}
-If you wish to post a preprint of your work online, e.g., on arXiv, using the NeurIPS style, please use the \verb+preprint+ option. This will create a nonanonymized version of your work with the text ``Preprint. Work in progress.'' in the footer. This version may be distributed as you see fit, as long as you do not say which conference it was submitted to. Please \textbf{do not} use the \verb+final+ option, which should \textbf{only} be used for papers accepted to NeurIPS.
+\section{Visual Analytics and Preprocessing Architecture}
+\label{sec:infovis}
 
+Rather than applying ad-hoc transformations, our preprocessing pipeline is guided directly by preattentive Visual Analytics (Figure~\ref{fig:data_quality}).
 
-At submission time, please omit the \verb+final+ and \verb+preprint+ options. This will anonymize your submission and add line numbers to aid review. Please do \emph{not} refer to these line numbers in your paper as they will be removed during generation of camera-ready copies.
-
-
-The file \verb+neurips_2026.tex+ may be used as a ``shell'' for writing your paper. All you have to do is replace the author, title, abstract, and text of the paper with your own.
-
-
-The formatting instructions contained in these style files are summarized in Sections \ref{gen_inst}, \ref{headings}, and \ref{others} below.
-
-
-\section{General formatting instructions}
-\label{gen_inst}
-
-
-The text must be confined within a rectangle 5.5~inches (33~picas) wide and
-9~inches (54~picas) long. The left margin is 1.5~inch (9~picas).  Use 10~point
-type with a vertical spacing (leading) of 11~points.  Times New Roman is the
-preferred typeface throughout, and will be selected for you by default.
-Paragraphs are separated by \nicefrac{1}{2}~line space (5.5 points), with no
-indentation.
-
-
-The paper title should be 17~point, initial caps/lower case, bold, centered
-between two horizontal rules. The top rule should be 4~points thick and the
-bottom rule should be 1~point thick. Allow \nicefrac{1}{4}~inch space above and
-below the title to rules. All pages should start at 1~inch (6~picas) from the
-top of the page.
-
-
-For the final version, authors' names are set in boldface, and each name is
-centered above the corresponding address. The lead author's name is to be listed
-first (left-most), and the co-authors' names (if different address) are set to
-follow. If there is only one co-author, list both author and co-author side by
-side.
-
-
-Please pay special attention to the instructions in Section \ref{others}
-regarding figures, tables, acknowledgments, and references.
-
-\section{Headings: first level}
-\label{headings}
-
-
-All headings should be lower case (except for first word and proper nouns),
-flush left, and bold.
-
-
-First-level headings should be in 12-point type.
-
-
-\subsection{Headings: second level}
-
-
-Second-level headings should be in 10-point type.
-
-
-\subsubsection{Headings: third level}
-
-
-Third-level headings should be in 10-point type.
-
-
-\paragraph{Paragraphs}
-
-
-There is also a \verb+\paragraph+ command available, which sets the heading in
-bold, flush left, and inline with the text, with the heading followed by 1\,em
-of space.
-
-
-\section{Citations, figures, tables, references}
-\label{others}
-
-
-These instructions apply to everyone.
-
-
-\subsection{Citations within the text}
-
-
-The \verb+natbib+ package will be loaded for you by default.  Citations may be
-author/year or numeric, as long as you maintain internal consistency.  As to the
-format of the references themselves, any style is acceptable as long as it is
-used consistently.
-
-
-The documentation for \verb+natbib+ may be found at
-\begin{center}
-  \url{http://mirrors.ctan.org/macros/latex/contrib/natbib/natnotes.pdf}
-\end{center}
-Of note is the command \verb+\citet+, which produces citations appropriate for
-use in inline text.  For example,
-\begin{verbatim}
-   \citet{hasselmo} investigated\dots
-\end{verbatim}
-produces
-\begin{quote}
-  Hasselmo, et al.\ (1995) investigated\dots
-\end{quote}
-
-
-If you wish to load the \verb+natbib+ package with options, you may add the
-following before loading the \verb+neurips_2026+ package:
-\begin{verbatim}
-   \PassOptionsToPackage{options}{natbib}
-\end{verbatim}
-
-
-If \verb+natbib+ clashes with another package you load, you can add the optional
-argument \verb+nonatbib+ when loading the style file:
-\begin{verbatim}
-   \usepackage[nonatbib]{neurips_2026}
-\end{verbatim}
-
-
-As submission is double blind, refer to your own published work in the third
-person. That is, use ``In the previous work of Jones et al.\ [4],'' not ``In our
-previous work [4].'' If you cite your other papers that are not widely available
-(e.g., a journal paper under review), use anonymous author names in the
-citation, e.g., an author of the form ``A.\ Anonymous'' and include a copy of the anonymized paper in the supplementary material.
-
-
-\subsection{Footnotes}
-
-
-Footnotes should be used sparingly.  If you do require a footnote, indicate
-footnotes with a number\footnote{Sample of the first footnote.} in the
-text. Place the footnotes at the bottom of the page on which they appear.
-Precede the footnote with a horizontal rule of 2~inches (12~picas).
-
-
-Note that footnotes are properly typeset \emph{after} punctuation
-marks.\footnote{As in this example.}
-
-
-\subsection{Figures}
-
-
-\begin{figure}
+\begin{figure}[htbp]
   \centering
-  \fbox{\rule[-.5cm]{0cm}{4cm} \rule[-.5cm]{4cm}{0cm}}
-  \caption{Sample figure caption. Explain what the figure shows and add a key take-away message to the caption.}
+  \includegraphics[width=\textwidth]{data_quality_diagnosis.png}
+  \caption{\textbf{Visual Data Quality Diagnosis.} Panel 1 demonstrates the $3.2:1$ class imbalance ($23.6\%$ severe), justifying $\text{PR-AUC}$ as our primary evaluation metric and class weighting in tree ensembles. Panel 2 highlights feature missingness profiles, motivating median imputation for age and constant zero imputation for unrecorded comorbidities. Panel 3 shows a $+12.1$-year rightward age shift across hospitalized patients via kernel density estimation, motivating continuous scaling via \texttt{StandardScaler}.}
+  \label{fig:data_quality}
 \end{figure}
 
+\subsection{Exploratory Risk Factor Analysis}
+Visualizing empirical hospitalization rates across demographic and clinical dimensions reveals non-linear risk escalations (Figure~\ref{fig:eda}). Age demonstrates a sharp exponential surge: hospitalization rates remain below $15\%$ for cohorts younger than $40$ years but escalate rapidly past age $50$, exceeding $60\%$ among patients over $70$ years old. Furthermore, specific pre-existing comorbidities act as potent individual multipliers: patients with chronic renal disease (\texttt{RENAL\_CRONICA}) experience a $66.8\%$ admission rate ($+182\%$ relative excess versus the overall cohort mean), while Chronic Obstructive Pulmonary Disease (\texttt{EPOC}) and immunosuppression (\texttt{INMUSUPR}) yield $62.7\%$ and $54.9\%$ admission rates, respectively.
 
-All artwork must be neat, clean, and legible. Lines should be dark enough for
- reproduction purposes. The figure number and caption always appear after the
-figure. Place one line space before the figure caption and one line space after
-the figure. The figure caption should be lower case (except for the first word and proper nouns); figures are numbered consecutively.
-
-
-You may use color figures.  However, it is best for the figure captions and the
-paper body to be legible if the paper is printed in either black/white or in
-color.
-
-
-\subsection{Tables}
-
-
-All tables must be centered, neat, clean, and legible.  The table number and
-title always appear before the table.  See Table~\ref{sample-table}.
-
-
-Place one line space before the table title, one line space after the
-table title, and one line space after the table. The table title must
-be lower case (except for the first word and proper nouns); tables are
-numbered consecutively.
-
-
-Note that publication-quality tables \emph{do not contain vertical rules}. We
-strongly suggest the use of the \verb+booktabs+ package, which allows for
-typesetting high-quality, professional tables:
-\begin{center}
-  \url{https://www.ctan.org/pkg/booktabs}
-\end{center}
-This package was used to typeset Table~\ref{sample-table}.
-
-
-\begin{table}
-  \caption{Sample table caption. Explain what the table shows and add a key take-away message to the caption.}
-  \label{sample-table}
+\begin{figure}[htbp]
   \centering
-  \begin{tabular}{lll}
+  \includegraphics[width=\textwidth]{eda_factores_riesgo.png}
+  \caption{\textbf{Minute 1 Clinical Risk Factors.} Panel 1 illustrates the exponential escalation of hospitalization rates by age cohort. Panel 2 highlights sex disparities, with male patients exhibiting a $+3.4\%$ higher hospitalization rate than females. Panel 3 employs preattentive semantic color encoding to categorize high-risk comorbidities ($\ge 50\%$ admission rate highlighted in dark crimson).}
+  \label{fig:eda}
+\end{figure}
+
+\subsection{Fairness and Population Sampling Biases}
+To prevent algorithmic inequity upon deployment, we investigate structural representation biases across the SISVER registry (Figure~\ref{fig:fairness}). First, infants ($0\text{--}9$ years) and elderly populations ($\ge 80$ years) represent small absolute sample volumes despite exhibiting distinct clinical risks. Second, because national epidemiological testing protocols prioritized severe hospital arrivals over mild ambulatory cases during peak waves, outpatients captured in SISVER represent a more clinically compromised cohort than typical primary care outpatients. Third, geographic disparities across the top $10$ federal entities (\texttt{ENTIDAD\_UM}) show hospitalization rates ranging from $10.9\%$ to $41.4\%$. This variance reflects local hospital bed capacity and regional admission thresholds rather than underlying biological risk alone.
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\textwidth]{fairness_analysis.png}
+  \caption{\textbf{Fairness and Population Sampling Biases.} Panel 1 contrasts sample volume (bars) against empirical hospitalization risk (red line) across age brackets. Panel 2 examines sample representation across biological sexes. Panel 3 illustrates significant regional admission variances across the top $10$ federal healthcare entities, emphasizing that local infrastructure heavily influences observed outcomes.}
+  \label{fig:fairness}
+\end{figure}
+
+\subsection{Scikit-Learn Preprocessing Architecture and Imputation Ablation}
+We encapsulate all preprocessing operations inside a scikit-learn \texttt{ColumnTransformer} coupled within data pipelines to guarantee zero leakage across cross-validation splits. For the continuous predictor (\texttt{EDAD}), missing values are imputed via the training fold median, followed by Z-score standardization.
+
+For boolean comorbidity features, SISVER catalogs missing entries as $97$, $98$, or $99$. To determine the optimal imputation strategy, we conducted an ablation study across $5$-fold stratified cross-validation using Logistic Regression. Imputing missing boolean entries via mode (\texttt{most\_frequent}) yielded a cross-validated $\text{PR-AUC}$ of $0.5109 \pm 0.0027$. Conversely, imputing via constant zero (\texttt{fill\_value=0}, assuming condition absence unless explicitly documented) achieved a superior $\text{PR-AUC}$ of $0.5601 \pm 0.0011$. Clinically, during emergency triage documentation, an unrecorded comorbidity overwhelmingly indicates the absence of the condition rather than positive prevalence. Consequently, we adopted constant zero imputation for all categorical boolean features.
+
+\section{Experimental Benchmarking and Hyperparameter Optimization}
+\label{sec:experiments}
+
+We partition the clean dataset into an $80\%$ training split ($n=210,405$) and a locked $20\%$ testing split ($n=52,602$), strictly preserving the $3.2:1$ class imbalance via stratified sampling (\texttt{stratify=y}).
+
+\subsection{Metric Selection and Baseline Comparison}
+Because the minority positive class ($23.6\%$ hospitalized) represents the primary target of interest, Area Under the Precision-Recall Curve ($\text{PR-AUC}$) serves as our objective optimization metric. We establish a trivial baseline using a \texttt{DummyClassifier} predicting the majority outpatient class for all arrivals. As shown in Table~\ref{tab:benchmark}, the dummy baseline achieves an accuracy of $76.36\%$ while registering a $\text{PR-AUC}$ of $0.2364$ and a Recall of $0.0000$, confirming that standard accuracy fails completely in capturing severe medical emergencies.
+
+\begin{table}[htbp]
+  \caption{Model Architecture Benchmarking across $5$-Fold Stratified Cross-Validation on Training Set ($n=210,405$).}
+  \label{tab:benchmark}
+  \centering
+  \begin{tabular}{lccccc}
     \toprule
-    \multicolumn{2}{c}{Part}                   \\
-    \cmidrule(r){1-2}
-    Name     & Description     & Size ($\mu$m) \\
+    \textbf{Model Architecture} & \textbf{PR-AUC} ($\uparrow$) & \textbf{ROC-AUC} & \textbf{Recall} ($\uparrow$) & \textbf{Precision} & \textbf{Accuracy} \\
     \midrule
-    Dendrite & Input terminal  & $\approx$100     \\
-    Axon     & Output terminal & $\approx$10      \\
-    Soma     & Cell body       & up to $10^6$  \\
+    Dummy Classifier (Baseline) & $0.2364$ & $0.5000$ & $0.0000$ & $0.0000$ & $0.7636$ \\
+    Logistic Regression (\texttt{balanced}) & $0.5109$ & $0.7506$ & $0.6497$ & $0.4551$ & $0.7333$ \\
+    Random Forest (\texttt{balanced}, base) & $0.4945$ & $0.7448$ & $0.6224$ & $0.4563$ & $0.7355$ \\
+    Multi-Layer Perceptron (MLP) & $0.5492$ & $0.7835$ & $0.3474$ & $0.6316$ & $0.7978$ \\
+    Gradient Boosting Classifier & $0.5532$ & $0.7847$ & $0.3569$ & $0.6331$ & $0.7991$ \\
     \bottomrule
   \end{tabular}
 \end{table}
 
-\subsection{Math}
-Note that display math in bare TeX commands will not create correct line numbers for submission. Please use LaTeX (or AMSTeX) commands for unnumbered display math. (You really shouldn't be using \$\$ anyway; see \url{https://tex.stackexchange.com/questions/503/why-is-preferable-to} and \url{https://tex.stackexchange.com/questions/40492/what-are-the-differences-between-align-equation-and-displaymath} for more information.)
+Across un-tuned models, Gradient Boosting and MLP attain the highest overall $\text{PR-AUC}$ scores ($0.5532$ and $0.5492$, respectively). However, because they lack built-in class re-weighting, their sensitivity to severe hospitalized cases is relatively low ($\text{Recall} \approx 35\%$). Conversely, linear models and tree ensembles utilizing \texttt{class\_weight='balanced'} capture over $62\%$ of severe cases at default settings.
 
-\subsection{Final instructions}
+\subsection{Hyperparameter Optimization via RandomizedSearchCV}
+To maximize discriminative power and capture rate while mitigating decision tree overfitting, we optimize our Random Forest pipeline using \texttt{RandomizedSearchCV} with $10$ iterations over a $50,000$-patient training subsample, directly targeting \texttt{average\_precision}. The optimal configuration identified was: $\texttt{n\_estimators}=150$, $\texttt{max\_depth}=15$, $\texttt{min\_samples\_leaf}=10$, $\texttt{min\_samples\_split}=20$, and $\texttt{class\_weight='balanced'}$. This tuned pipeline was subsequently retrained on the entire $210,405$-patient training set.
 
-Do not change any aspects of the formatting parameters in the style files.  In
-particular, do not modify the width or length of the rectangle the text should
-fit into, and do not change font sizes. Please note that pages should be
-numbered.
+\section{Definitive Test Set Evaluation and Clinical Decision Support}
+\label{sec:evaluation}
 
+Unlocking the testing vault ($n=52,602$ unseen patient arrivals) demonstrates robust generalization without overfitting (Figure~\ref{fig:eval_final}). The optimized Random Forest achieves a definitive $\text{PR-AUC}$ of $0.5771$, representing a $+132\%$ improvement over the dummy baseline, alongside a $\text{ROC-AUC}$ of $0.8044$.
 
-\section{Preparing PDF files}
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\textwidth]{evaluacion_final.png}
+  \caption{\textbf{Final Model Evaluation on Unseen Test Vault ($n=52,602$).} Panel 1 presents the clinical confusion matrix, demonstrating a $70.1\%$ sensitivity ($\text{Recall}$) in capturing severe hospitalized arrivals. Panel 2 displays the complete Precision-Recall curve highlighting a $\text{PR-AUC}$ of $0.5771$. Panel 3 illustrates exact relative feature importances, showing that patient age (\texttt{EDAD}) accounts for $55.5\%$ of predictive weight during Minute 1 triage.}
+  \label{fig:eval_final}
+\end{figure}
 
-
-Please prepare submission files with paper size ``US Letter,'' and not, for
-example, ``A4.''
-
-
-Fonts were the main cause of problems in the past years. Your PDF file must only
-contain Type 1 or Embedded TrueType fonts. Here are a few instructions to
-achieve this.
-
-
+\subsection{Clinical Confusion Matrix Breakdown}
+Analyzing the absolute patient counts inside the test confusion matrix reveals key operational tradeoffs:
 \begin{itemize}
-
-
-\item You should directly generate PDF files using \verb+pdflatex+.
-
-
-\item You can check which fonts a PDF files uses.  In Acrobat Reader, select the
-  menu Files$>$Document Properties$>$Fonts and select Show All Fonts. You can
-  also use the program \verb+pdffonts+ which comes with \verb+xpdf+ and is
-  available out-of-the-box on most Linux machines.
-
-
-\item \verb+xfig+ ``patterned'' shapes are implemented with bitmap fonts.  Use
-  "solid" shapes instead.
-
-
-\item The \verb+\bbold+ package almost always uses bitmap fonts.  You should use
-  the equivalent AMS Fonts:
-\begin{verbatim}
-   \usepackage{amsfonts}
-\end{verbatim}
-followed by, e.g., \verb+\mathbb{R}+, \verb+\mathbb{N}+, or \verb+\mathbb{C}+
-for $\mathbb{R}$, $\mathbb{N}$ or $\mathbb{C}$.  You can also use the following
-workaround for reals, natural and complex:
-\begin{verbatim}
-   \newcommand{\RR}{I\!\!R} %real numbers
-   \newcommand{\Nat}{I\!\!N} %natural numbers
-   \newcommand{\CC}{I\!\!\!\!C} %complex numbers
-\end{verbatim}
-Note that \verb+amsfonts+ is automatically loaded by the \verb+amssymb+ package.
-
-
+    \item \textbf{True Positives ($\text{TP}=8,688$):} The model correctly identifies $70.1\%$ ($\text{Recall}$) of all patients who ultimately require inpatient hospitalization, enabling rapid admission during Minute 1.
+    \item \textbf{False Negatives ($\text{FN}=3,728$):} Only $30.0\%$ of severe cases are missed at initial intake, down from $100\%$ missed under the trivial baseline.
+    \item \textbf{False Positives ($\text{FP}=10,286$):} Approximately $25.6\%$ of mild ambulatory arrivals are flagged as potentially severe. In clinical triage, these false alarms represent patients held in observation for secondary monitoring (e.g., chest imaging or blood panels)—an acceptable operational cost to prevent fatal discharges.
+    \item \textbf{True Negatives ($\text{TN}=29,898$):} The model correctly identifies and discharges $74.4\%$ of mild ambulatory patients, effectively decongesting emergency waiting rooms.
 \end{itemize}
 
+Feature importance inspection confirms that demographic and clinical risk factors align with medical literature: patient age (\texttt{EDAD}) dominates intake decision logic with $55.5\%$ relative weight, followed by diabetes ($14.8\%$), hypertension ($9.3\%$), biological sex ($5.2\%$), and chronic kidney disease ($3.5\%$).
 
-If your file contains type 3 fonts or non embedded TrueType fonts, we will ask
-you to fix it.
+\section{Subgroup Error Analysis and Operational Triage Safeguards}
+\label{sec:error_analysis}
 
+A model with $70.1\%$ overall recall can still hide life-threatening vulnerabilities within specific patient subpopulations. To investigate failure modes, we isolate all $12,416$ actual hospitalized patients in our test split and examine the exact False Negative rate across age, sex, and known comorbidity count (Figure~\ref{fig:error_subgroup}).
 
-\subsection{Margins in \LaTeX{}}
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\textwidth]{error_analysis_subgrupos.png}
+  \caption{\textbf{Honest Subgroup Error Analysis across False Negatives ($\text{FN}$).} Panel 1 reveals a critical blind spot: young adults aged $20\text{--}39$ years old experience an $82.0\%$ False Negative rate because young age masks early clinical severity. Panel 2 shows female patients exhibit a slightly higher $\text{FN}$ rate ($31.6\%$) than males ($28.9\%$). Panel 3 demonstrates that severe patients with zero documented comorbidities suffer a $53.9\%$ missed detection rate, as the model relies heavily on known chronic risk multipliers.}
+  \label{fig:error_subgroup}
+\end{figure}
 
+Our preattentive error audit uncovers two critical clinical vulnerabilities:
+\begin{enumerate}
+    \item \textbf{The Young Adult Paradox:} Patients aged $20\text{--}39$ years old who ultimately require hospitalization exhibit an $82.0\%$ False Negative rate. Because the tree ensemble assigns heavy weight to age ($55.5\%$), young patients arriving in triage without established chronic illnesses are predicted as mild outpatients even when experiencing early acute hypoxia.
+    \item \textbf{The Comorbidity Absence Blind Spot:} Hospitalized patients with zero documented comorbidities show a $53.9\%$ False Negative rate, compared to only $16.7\%$ among patients with three or more comorbidities. When chronic risk indicators are absent, the model defaults toward ambulatory discharge.
+\end{enumerate}
 
-Most of the margin problems come from figures positioned by hand using
-\verb+\special+ or other commands. We suggest using the command
-\verb+\includegraphics+ from the \verb+graphicx+ package. Always specify the
-figure width as a multiple of the line width as in the example below:
-\begin{verbatim}
-   \usepackage[pdftex]{graphicx} ...
-   \includegraphics[width=0.8\linewidth]{myfile.pdf}
-\end{verbatim}
-See Section 4.4 in the graphics bundle documentation
-(\url{http://mirrors.ctan.org/macros/latex/required/graphics/grfguide.pdf})
+\section{Conclusion and Deployment Protocol}
+\label{sec:conclusion}
 
+This study demonstrates that Minute 1 triage hospitalization prediction is technically feasible using only $13$ pre-admission clinical and demographic variables, achieving a $\text{PR-AUC}$ of $0.5771$ ($+132\%$ vs. baseline) and capturing $70.1\%$ of severe arrivals without relying on post-triage data leakage. Crucially, our integration of Visual Analytics and honest subgroup error auditing reveals why deploying raw ML probabilities without clinical guardrails is hazardous.
 
-A number of width problems arise when \LaTeX{} cannot properly hyphenate a
-line. Please give LaTeX hyphenation hints using the \verb+\-+ command when
-necessary.
+To translate these findings into safe clinical practice, we recommend an operational deployment protocol that couples our Random Forest probability score ($\hat{p}$) with mandatory secondary checks:
+\begin{itemize}
+    \item \textbf{High-Risk Track ($\hat{p} \ge 0.50$):} Immediate priority admission or assignment to acute observation beds.
+    \item \textbf{Ambulatory Track ($\hat{p} < 0.50$, Age $\ge 40$, or Known Comorbidities):} Standard outpatient discharge with home care instructions.
+    \item \textbf{Clinical Safeguard Track ($\hat{p} < 0.50$, Age $< 40$, and Zero Comorbidities):} Because our subgroup error analysis proves that young, apparently healthy arrivals face an $82.0\%$ false-negative risk when severe, triage stations must mandate a physical pulse oximetry check ($\text{SpO}_2$). If oxygen saturation falls below $92\%$, the ML outpatient prediction is overridden immediately.
+\end{itemize}
 
-\begin{ack}
-Use unnumbered first level headings for the acknowledgments. All acknowledgments
-go at the end of the paper before the list of references. Moreover, you are required to declare
-funding (financial activities supporting the submitted work) and competing interests (related financial activities outside the submitted work).
-More information about this disclosure can be found at: \url{https://neurips.cc/Conferences/2026/PaperInformation/FundingDisclosure}.
-
-
-Do {\bf not} include this section in the anonymized submission, only in the final paper. You can use the \texttt{ack} environment provided in the style file to automatically hide this section in the anonymized submission.
-\end{ack}
+By embedding interpretable machine learning inside transparent visual analytics and domain-specific clinical overrides, healthcare systems can achieve rapid triage efficiency while preserving strict patient safety across evolving epidemic surges.
 
 \section*{References}
 
-
-References follow the acknowledgments in the camera-ready paper. Use unnumbered first-level heading for
-the references. Any choice of citation style is acceptable as long as you are
-consistent. It is permissible to reduce the font size to \verb+small+ (9 point)
-when listing the references.
-Note that the Reference section does not count towards the page limit.
-\medskip
-
-
-{
 \small
-
-
-[1] Alexander, J.A.\ \& Mozer, M.C.\ (1995) Template-based algorithms for
-connectionist rule extraction. In G.\ Tesauro, D.S.\ Touretzky and T.K.\ Leen
-(eds.), {\it Advances in Neural Information Processing Systems 7},
-pp.\ 609--616. Cambridge, MA: MIT Press.
-
-
-[2] Bower, J.M.\ \& Beeman, D.\ (1995) {\it The Book of GENESIS: Exploring
-  Realistic Neural Models with the GEneral NEural SImulation System.}  New York:
-TELOS/Springer--Verlag.
-
-
-[3] Hasselmo, M.E., Schnell, E.\ \& Barkai, E.\ (1995) Dynamics of learning and
-recall at excitatory recurrent synapses and cholinergic modulation in rat
-hippocampal region CA3. {\it Journal of Neuroscience} {\bf 15}(7):5249-5262.
-}
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\appendix
-
-\section{Technical appendices and supplementary material}
-Technical appendices with additional results, figures, graphs, and proofs may be submitted with the paper submission before the full submission deadline (see above). You can upload a ZIP file for videos or code, but do not upload a separate PDF file for the appendix. There is no page limit for the technical appendices. 
-
-Note: Think of the appendix as ``optional reading'' for reviewers. The paper must be able to stand alone without the appendix; for example, adding critical experiments that support the main claims to an appendix is inappropriate. 
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\newpage
-\input{checklist.tex}
-
+\begin{enumerate}
+    \item Secretaría de Salud (Gobierno de México). \emph{Sistema de Vigilancia Epidemiológica de Enfermedades Respiratorias Virales (SISVER)}. Open Data Portal, 2020--2023.
+    \item Pedregosa, F., Varoquaux, G., Gramfort, A., Michel, V., Thirion, B., Grisel, O., et al. \emph{Scikit-learn: Machine Learning in Python}. Journal of Machine Learning Research, 12:2825--2830, 2011.
+    \item Saito, T., and Rehmsmeier, M. \emph{The Precision-Recall Plot Is More Informative than the ROC Plot When Evaluating Binary Classifiers on Imbalanced Datasets}. PLOS ONE, 10(3):e0118432, 2015.
+    \item Chawla, N. V., Bowyer, K. W., Hall, L. O., and Kegelmeyer, W. P. \emph{SMOTE: Synthetic Minority Over-sampling Technique}. Journal of Artificial Intelligence Research, 16:321--357, 2002.
+    \item Munzner, T. \emph{Visualization Analysis and Design}. A K Peters/CRC Press, 2014.
+\end{enumerate}
 
 \end{document}
