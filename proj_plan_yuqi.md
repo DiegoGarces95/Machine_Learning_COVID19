@@ -22,7 +22,7 @@
 
 - Models:
   trivial reference predictor: majority-class classifier
-  
+
   logistic regression, random forest, a simple MLP?
 
 - Metrics:
@@ -48,3 +48,12 @@
    - Add EDA plots
    - train/test split
    
+
+
+
+
+   - Define the models (where you are now)
+   - Build a preprocessing pipeline
+   - Cross-validation comparison
+   - Hyperparameter tuning for the best model
+   - Final evaluation on the test set
