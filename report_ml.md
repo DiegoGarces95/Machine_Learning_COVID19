@@ -34,6 +34,9 @@ We excluded variables that could leak information from later stages of the hospi
 | `NEUMONIA` | No | May be recorded after further examination |
 | `INTUBADO`, `UCI`, `FECHA_DEF` | No | Downstream hospital outcomes |
 
+### 1.4 Representation and Fairness Considerations
+
+Beyond the testing bias described above, the age and sex composition of the tested population itself may not be balanced, and a model trained on unevenly represented groups can perform worse for the less represented ones. We flag this concern here and return to it with evidence from the error analysis in Section 6.2.
 
 
 ## 2. Dataset Analysis and Preprocessing *(Section A)*
