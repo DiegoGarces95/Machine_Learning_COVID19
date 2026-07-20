@@ -27,6 +27,12 @@ The final feature set includes age, sex, several comorbidities, and whether the 
 The comorbidity variables include diabetes, COPD, asthma, immunosuppression, hypertension, cardiovascular disease, obesity, chronic kidney disease, other comorbidities, and smoking. These variables are useful because they describe the patient's risk factors available at the time of evaluation.
 
 We excluded variables that could leak information from later stages of the hospitalization. In particular, we did not use `INTUBADO`, `UCI`, `FECHA_DEF`, or `NEUMONIA`. Intubation, ICU admission, and death date are clearly downstream outcomes. `NEUMONIA` was also excluded because it may be recorded either first-minute or during hospitalization.
+| Variable | Included? | Reason |
+|---|---:|---|
+| Age, sex, comorbidities | Yes | Available at initial evaluation |
+| `OTRO_CASO` | Yes | Exposure history may be asked at intake |
+| `NEUMONIA` | No | May be recorded after further examination |
+| `INTUBADO`, `UCI`, `FECHA_DEF` | No | Downstream hospital outcomes |
 
 
 
@@ -46,7 +52,7 @@ The EDA shows that age is strongly related to hospitalization. Older patients ha
 
 Comorbidities are also important. Patients with known conditions have higher hospitalization rates.
 
-Most selected features have little missing data, but `OTRO_CASO` has many unknown values. Because of this, we later do ablation study with and without it.
+Most selected features have little missing data, but `OTRO_CASO` has many unknown values. Because of this, we later perform ablation study with and without it.
 ![Hospitalization rate by age group.](image-1.png)
 ![Hospitalization rate by comorbidity.](image-2.png)
 ![Missing values in selected features.](image-3.png)
@@ -158,9 +164,7 @@ Female hospitalized patients also had a higher false negative rate than male hos
 
 ### 6.2 Fairness and Potential Harms
 
-This dataset is not population-level. Severe cases are overrepresented, while mild and asymptomatic cases are underrepresented. Testing access may also differ across regions.
-
-The model also misses some subgroups more often, especially younger patients, patients with no recorded comorbidities, and female patients. The main harm is a false negative, which could send severe patients home.
+As anticipated in Section 1.4, the error analysis above shows that representation gaps in the data translate into uneven model performance: younger patients, patients with no recorded comorbidities, and female patients are missed more often. The main harm is a false negative, which could send severe patients home.
 
 Therefore, the model can only be used as a decision support, combined with clinical judgement from professionals.
 
@@ -191,4 +195,4 @@ Diego Garcés, Yuqi Fang
 
 
 ## AI Usage Disclaimer
-LLMs was used for suggesting code structure, debugging, explaining concepts, beautifying slides, and improving wording. The final modeling decisions were reviewed by the project authors.
+AI tools were used for suggesting code structure, debugging, explaining concepts, beautifying slides, and improving wording.
