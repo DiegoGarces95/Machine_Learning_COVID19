@@ -80,29 +80,28 @@ Before running the experiments, we expected random forest to work well because i
 
 The majority baseline has high accuracy because most patients were not hospitalized, but it never detects hospitalized patients. This confirms that accuracy alone is not useful for this task.
 
-Among the real models, MLP achieved the highest PR-AUC, but its recall was much lower. Random forest had slightly lower PR-AUC but much higher recall. Since a false negative means missing a patient who actually needs hospitalization, we selected random forest as the final model family.
+Among the real models, MLP had the highest PR-AUC, but its recall was much lower. Random forest had slightly lower PR-AUC but much higher recall. Since a false negative means missing a patient who actually needs hospitalization, random forest was considered the best model.
+
 
 
 ## 4. Final Pipeline and Hyperparameter Search *(Section C)*
 
 ### 4.1 Final Model Choice
-- Random forest
-- Reason:
-  - good recall
-  - nonlinear relationships
-  - easier to interpret than MLP
+Based on the cross-validation results, we used random forest as the final model family. 
 
 ### 4.2 Hyperparameter Search
-- RandomizedSearchCV
-- 12 configurations
-- 5-fold CV
-- 60 fitted models total
-- Best:
-  - `n_estimators = 200`
-  - `max_depth = 16`
-  - `min_samples_leaf = 20`
-- Best CV PR-AUC: 0.548
-- Mention top configurations were very similar
+
+We tuned the random forest using `RandomizedSearchCV` on the training set only. The search used 5-fold cross-validation and tested 12 hyperparameter configurations, so 60 models were fitted in total. This is within the suggested limit of about 200 fitted models.
+
+The best selected parameters were:
+
+| Hyperparameter | Selected value |
+|---|---:|
+| `n_estimators` | 200 |
+| `max_depth` | 16 |
+| `min_samples_leaf` | 20 |
+
+The best cross-validation PR-AUC was 0.548. Several top configurations had almost the same score, so the model was not very sensitive to small changes in these hyperparameters.
 
 ## 5. Final Test Evaluation *(Section C, cont.)*
 
