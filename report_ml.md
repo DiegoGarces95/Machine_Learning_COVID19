@@ -146,45 +146,49 @@ We checked feature importance of the final random forest. Age has a much higher 
 
 
 
-## 6. Error Analysis, Fairness, and Limitations *(Section C, cont.)*
+## 6. Error Analysis and Fairness *(Section C)*
 
 ### 6.1 Error Analysis
-Focus on false negatives:
-- overall FN rate among hospitalized patients: 29.7%
-- high FN rate for:
-  - age 19-30: 81.9%
-  - age 31-45: 74.3%
-  - no comorbidities: 55.2%
-  - female hospitalized patients: 38.0% vs male 24.1%
 
-Interpretation:
-- model relies heavily on age and known comorbidities
-- young or apparently healthier hospitalized patients are harder to detect
+We focused on false negatives. The overall false negative rate among hospitalized test patients was 29.7%.
+
+The model missed younger hospitalized patients more often: the false negative rate was 81.9% for ages 19-30 and 74.3% for ages 31-45. Patients with no recorded comorbidities were also often missed, with a false negative rate of 55.2%. This suggests that the model relies strongly on age and known comorbidities.
+
+Female hospitalized patients also had a higher false negative rate than male hospitalized patients in this test set, 38.0% compared with 24.1%. We interpret this as an observed subgroup error pattern.
 
 ### 6.2 Fairness and Potential Harms
-- As anticipated in Section 1.4, the dataset is not population-level: severe cases are overrepresented, mild/asymptomatic cases underrepresented, and testing access itself may vary by region and socioeconomic status
-- The error analysis above confirms the representation concern translates into uneven model performance: some subgroups (younger adults, patients with no recorded comorbidities, female hospitalized patients) are missed more often than others
-- False negatives could send severe patients home
-- Model should support, not replace, clinical judgment
 
-### 6.3 Limitations
-- Retrospective dataset
-- Data collection bias
-- Missing values, especially `OTRO_CASO`
-- No oxygen saturation or symptom severity features
-- No external validation
+This dataset is not population-level. Severe cases are overrepresented, while mild and asymptomatic cases are underrepresented. Testing access may also differ across regions.
+
+The model also misses some subgroups more often, especially younger patients, patients with no recorded comorbidities, and female patients. The main harm is a false negative, which could send severe patients home.
+
+Therefore, the model can only be used as a decision support, combined with clinical judgement from professionals.
+
 
 ## 7. Conclusion
 
-- Hospitalization prediction from early clinical variables is feasible
-- Leakage prevention was central
-- Random forest gave a useful recall-oriented model
-- The model has clear subgroup weaknesses
-- It should only be used as decision support
+This project shows that hospitalization can be predicted to some extent from early clinical information such as age, sex, comorbidities, and reported contact with another COVID-19 case. Preventing leakage was an important part of the work, because several variables in the dataset describe later hospital outcomes and should not be used.
+
+The final random forest model detected about 70% of hospitalized patients on the test set. This is meaningful, but the error analysis showed weaknesses. Younger hospitalized patients and patients with no recorded comorbidities were more likely to be missed.
+
+Overall, the model is best understood as a decision support tool.
+
+
+## Authors
+Diego Garcés, Yuqi Fang
 
 ## References
-- Dataset / Kaggle
-- SISVER / Mexico Ministry of Health
-- scikit-learn
-- PR-AUC paper if used
-- AI usage disclosure
+
+1. **Secretaría de Salud (Gobierno de México).** *Sistema de Vigilancia Epidemiológica de Enfermedades Respiratorias Virales (SISVER)*. Open Data Portal, 2020-2023.
+
+2. **Mariana R. Franklin.** *Mexico COVID-19 Clinical Data*. Kaggle dataset. https://www.kaggle.com/datasets/marianarfranklin/mexico-covid19-clinical-data (accessed July 2026)
+
+3. **Pedregosa, F., et al.** *Scikit-learn: Machine Learning in Python*. Journal of Machine Learning Research, 12:2825-2830, 2011.
+
+4. **Saito, T., & Rehmsmeier, M.** *The Precision-Recall Plot Is More Informative than the ROC Plot When Evaluating Binary Classifiers on Imbalanced Datasets*. PLOS ONE, 10(3):e0118432, 2015.
+
+5. **Munzner, T.** *Visualization Analysis and Design*. CRC Press, 2014.
+
+
+## AI Usage Disclaimer
+LLMs was used for suggesting code structure, debugging, explaining concepts, beautifying slides, and improving wording. The final modeling decisions were reviewed by the project authors.
