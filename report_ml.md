@@ -27,93 +27,61 @@ The final feature set includes age, sex, several comorbidities, and whether the 
 The comorbidity variables include diabetes, COPD, asthma, immunosuppression, hypertension, cardiovascular disease, obesity, chronic kidney disease, other comorbidities, and smoking. These variables are useful because they describe the patient's risk factors available at the time of evaluation.
 
 We excluded variables that could leak information from later stages of the hospitalization. In particular, we did not use `INTUBADO`, `UCI`, `FECHA_DEF`, or `NEUMONIA`. Intubation, ICU admission, and death date are clearly downstream outcomes. `NEUMONIA` was also excluded because it may be recorded either first-minute or during hospitalization.
-| Variable | Available at prediction time? | Included? | Reason |
-|---|---:|---:|---|
-| `EDAD` | Yes | Yes | Baseline demographic information |
-| `SEXO` | Yes | Yes | Baseline demographic information |
-| Comorbidities | Yes | Yes | Usually known from patient history |
-| `OTRO_CASO` | Probably | Yes | Exposure history may be asked at intake |
-| `NEUMONIA` | Unclear | No | May be diagnosed later and could cause leakage |
-| `INTUBADO` | No | No | Downstream hospital procedure |
-| `UCI` | No | No | ICU admission happens after initial triage |
-| `FECHA_DEF` | No | No | Death date is a future outcome |
 
-### ❓❓❓1.4 Representation and Fairness Considerations
-- Who is represented in this dataset in the first place is not neutral: testing was rationed by severity (100% of severe/SARI cases, ~10% of mild cases sampled, asymptomatic cases essentially absent), so access to testing itself may vary by region and socioeconomic access to care, not only by clinical severity
-- Consider age and sex balance in the raw data before modeling: are any age groups or sexes over/under-represented relative to what we'd expect in the general symptomatic population?
-- Flag upfront that these representation gaps could translate into systematically worse model performance for under-represented subgroups
-- Note this is revisited with empirical evidence (false-negative rate by subgroup) in Section 6.2, after the final model is evaluated
 
-## 2. Dataset Analysis and Preprocessing *(Section A, cont.)*
+
+## 2. Dataset Analysis and Preprocessing *(Section A)*
 
 ### 2.1 Target Distribution
 
 The target is imbalanced. In the dataset, 76.4% of patients were not hospitalized and 23.6% were hospitalized. This means that accuracy alone is not a good metric. A model that always predicts "not hospitalized" would already get high accuracy, but it would fail to detect actual hospitalized patients.
 
 For this reason, we also use recall, F1 score, ROC-AUC, and especially PR-AUC when evaluating models.
-![alt text](image.png)
+
 
 
 ### 2.2 Exploratory Data Analysis
-Include 2-3 plots:
-- hospitalization rate by age group
-- hospitalization rate by comorbidity
-- missing values in selected features
 
-Main findings:
-- hospitalization increases strongly with age
-- several comorbidities are associated with higher hospitalization
-- `OTRO_CASO` has many missing values
+The EDA shows that age is strongly related to hospitalization. Older patients have much higher hospitalization rates than younger patients.
+
+Comorbidities are also important. Patients with known conditions have higher hospitalization rates.
+
+Most selected features have little missing data, but `OTRO_CASO` has many unknown values. Because of this, we later do ablation study with and without it.
+![Hospitalization rate by age group.](image-1.png)
+![Hospitalization rate by comorbidity.](image-2.png)
+![Missing values in selected features.](image-3.png)
 
 ### 2.3 Preprocessing
-- Fixed recoding:
-  - `97/98/99 -> NaN`
-  - binary variables: `1/2 -> 1/0`
-- Pipeline:
-  - median imputation for age
-  - scaling for age
-  - most frequent imputation for binary features
-  - classifier
-- Explain why preprocessing is inside the pipeline
+
+We applied recoding rules from the dataset documentation. Unknown codes such as `97`, `98`, and `99` were treated as missing values. For binary features, we recoded `1` as yes and `2` as no, using `1/0` coding for modeling. For `SEXO`, this means `1 = female` and `0 = male`.
+
+The remaining preprocessing steps were placed inside a scikit-learn pipeline. Age was imputed with the median and then standardized. Binary features were imputed with the most frequent value. Keeping these steps inside the pipeline prevents information from test data from being used during training.
 
 ### 2.4 Feature Ablation: `OTRO_CASO`
-- Compare with and without `OTRO_CASO`
-- Results:
-  - with `OTRO_CASO`: PR-AUC 0.542, recall 0.678
-  - without `OTRO_CASO`: PR-AUC 0.539, recall 0.678
-- Decision: keep `OTRO_CASO`
+
+`OTRO_CASO` had many missing values, so we checked whether it was meaningful to be included. We compared the same random forest model with and without this feature using cross-validation on the training set.
+
+Keeping `OTRO_CASO` gave a slightly higher PR-AUC and F1 score, while recall stayed the same. The difference was small, but it suggested that the feature still adds some useful information. We therefore kept `OTRO_CASO` in the final feature set.
+
+
 
 ## 3. Model Comparison *(Section B)*
 
-### 3.1 Experimental Setup
-- 80/20 stratified train/test split
-- Cross-validation only on training set
-- Test set kept untouched until final evaluation
-- Primary metric: PR-AUC
-- Also report recall, F1, ROC-AUC
+We first split the data into an 80% training set and a 20% test set, using stratification to keep the hospitalization rate similar in both sets. We compared four models using 5-fold stratified cross-validation on the training set. The test set was not used during this step. Each model was evaluated as a full pipeline, including preprocessing and the classifier.
 
-### 3.2 Intuition (stated before running experiments)
-- Expect random forest to perform well: it can capture nonlinear interactions between age and comorbidities that a linear model would miss
-- Expect logistic regression to be easier to interpret but potentially miss those interactions
-- MLP included as a different model family, with no strong prior on whether it will outperform random forest on this tabular dataset
+Before running the experiments, we expected random forest to work well because it can capture nonlinear relationships between age and comorbidities. Logistic regression was included as a simple and interpretable model, and MLP was included as a different model family. We also used a majority-class classifier as a baseline.
 
-### 3.3 Models Compared
-- majority baseline
-- logistic regression
-- random forest
-- MLP
+| Model | Accuracy | Precision | Recall | F1 | ROC-AUC | PR-AUC |
+|---|---:|---:|---:|---:|---:|---:|
+| MLP | 0.798 | 0.627 | 0.355 | 0.453 | 0.784 | 0.550 |
+| Random forest | 0.742 | 0.469 | 0.678 | 0.554 | 0.781 | 0.542 |
+| Logistic regression | 0.734 | 0.456 | 0.649 | 0.535 | 0.751 | 0.511 |
+| Majority baseline | 0.764 | 0.000 | 0.000 | 0.000 | 0.500 | 0.236 |
 
-### 3.4 Cross-Validation Results
-Include model comparison table:
-- MLP: PR-AUC 0.550, recall 0.355
-- random forest: PR-AUC 0.542, recall 0.678
-- logistic regression: PR-AUC 0.511, recall 0.649
-- baseline: PR-AUC 0.236, recall 0.000
+The majority baseline has high accuracy because most patients were not hospitalized, but it never detects hospitalized patients. This confirms that accuracy alone is not useful for this task.
 
-Interpretation:
-- MLP has slightly higher PR-AUC than expected relative to random forest — a mild surprise worth one sentence of explanation (e.g., MLP may fit the majority class distribution slightly better on average without being better at ranking the minority class high, since recall tells a different story)
-- random forest has much higher recall, consistent with the intuition above
-- choose random forest because missing hospitalized patients is costly, so recall is prioritized over the single highest PR-AUC
+Among the real models, MLP achieved the highest PR-AUC, but its recall was much lower. Random forest had slightly lower PR-AUC but much higher recall. Since a false negative means missing a patient who actually needs hospitalization, we selected random forest as the final model family.
+
 
 ## 4. Final Pipeline and Hyperparameter Search *(Section C)*
 
